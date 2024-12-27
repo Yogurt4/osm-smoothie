@@ -95,6 +95,8 @@ Van, hogy a referencia „érdekes”. Az alábbi képen pl. a buszforduló hurk
 
 Az algoritmus szándékosan kihagyja az egyirányú utakat és a körforgalmakat. Előbbieknél a leggyakoribb az OSM és MK közötti szemléletbeli eltérés (út csatlakozások, körforgalom ki-behajtók). Utóbbiaknál pedig a becsatlakozó, de a referenciában nem szereplő utakat is meg kell igazítani.
 
+Szintén szándékosan nem húzza a referenciára azokat az OSM-es utakat, ahol meg van adva a sávok száma, és ez páratlan, vagy nem egyezik a két irányban. Ez azért lényeges, mert az OSM-en az aszfalt közepét szoktuk térképezni, míg a Magyar Közút a két irányt elválasztó vonalat.
+
 ### És még
 
 Az igazítás ellenőrzése egyben jó alkalom arra, hogy az utak besorolását (a számozott szakasz végét) is ellenőrizzük. Tipikusan az ötszámjegyű bekötő utaknál szokott előfordulni, hogy a logikusnak tűnő kereszteződéshez képest a semmi közepén ér véget a számozott közút.
