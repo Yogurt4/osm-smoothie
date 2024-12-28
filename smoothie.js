@@ -221,7 +221,7 @@ export function processOSM(ref, refs, config)
   }
   ds.cleanupDeletedPrimitives();
 
-  if (cntFreshN > 0) {
+  if (cntFreshN > 2) {
     const unames = Object.keys(users).sort((a, b) => (users[b] - users[a])).map(i => `${i} (${users[i]})`).join(', ');
     console.warn(`${cntFreshN} of ${cntN} nodes were recently modified by ${unames}`);
   }
