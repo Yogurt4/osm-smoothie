@@ -135,13 +135,30 @@ export function buildFinder(refWays, bufferWidth, maxArea)
       nodes.push({ lat: coordinates.lat(), lon: coordinates.lon()});
     });
 
-    const bbox = ct.bufferRect(getBBox(nodes), bufferWidth);
-    const a = ct.getArea(bbox.minX, bbox.minY, bbox.maxX, bbox.maxY);
-    if (a > maxArea * 1.0e6) {
-      console.warn('Split needed between nodes (in the reference).');  // TODO
+    const boxes = [];
+    let start = 0;
+    let end = nodes.length;
+    for ( ; start < nodes.length; ) {
+      if (start === end) {
+        end = nodes.length;
+        continue;
+      }
+      if (start + 1 === end) {
+        console.error('Too long segment in the reference.');
+        break;
+      }
+
+      const bbox = ct.bufferRect(getBBox(nodes.slice(start, end)), bufferWidth);
+      const a = ct.getArea(bbox.minX, bbox.minY, bbox.maxX, bbox.maxY);
+      if (a < maxArea * 1.0e6) {
+        boxes.push(bbox);
+        start = end;
+      } else {
+        end = Math.floor((start + end) / 2);
+      }
     }
 
-    refs.push({ bbox, nodes });
+    refs.push({ bbox: ct.bufferRect(getBBox(nodes), bufferWidth), nodes, boxes });
   }
 
   return refs;

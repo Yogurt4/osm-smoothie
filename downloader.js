@@ -37,7 +37,7 @@ function mergeRects(rects, maxArea)
 
 export function downloadRects(refs, workName, maxArea)
 {
-  const rects = refs.map((r) => r.bbox);
+  const rects = refs.map((r) => r.boxes).flat();
   const merged = mergeRects(rects, maxArea);
   let layer = layers.get(workName);
   if (!layer)
