@@ -85,15 +85,25 @@ A pontosítás csak a referencia útnak megfelelő OSM-es vonalat pontosítja. A
 
 ![footway](img/footway.jpg)
 
+### „Éles szög”
+
+Előfordul, hogy annyit kell igazítani az úton, hogy egy csatlakozó mellékutca pontja (pl. elsőbbségadás kötelező vagy STOP tábla) is a referencia túloldalán van. Ilyenkor a kereszteződés helyre húzása egy éles szögű törést fog eredményezni.
+
 ### A referencia hibája
 
 Van, hogy a referencia „érdekes”. Az alábbi képen pl. a buszforduló hurka megszakad. Emiatt aztán az algoritmus a lila vonalról a pirosra húzta a pontokat.
 
 ![loop](img/loop.jpg)
 
+### Átépítés
+
+Van olyan is, ahol az út vonalvezetése megváltozott, de a referencia még a régit tartalmazza.
+
+Ez persze fordítva is előfordul: A referencián nőtt egy új körforgalom az út közepére, amire az OSM-es egyenest kellene ráhúzni.
+
 ### És még mit nem?
 
-Az algoritmus szándékosan kihagyja az egyirányú utakat és a körforgalmakat. Előbbieknél a leggyakoribb az OSM és MK közötti szemléletbeli eltérés (út csatlakozások, körforgalom ki-behajtók). Utóbbiaknál pedig a becsatlakozó, de a referenciában nem szereplő utakat is meg kell igazítani.
+Az algoritmus szándékosan kihagyja az egyirányú utakat és a körforgalmakat. Előbbieknél a leggyakoribb az OSM és MK közötti szemléletbeli eltérés (út csatlakozások, körforgalom ki-behajtók, pontosan mettől-meddig osztott pályák stb.). Utóbbiaknál pedig a becsatlakozó, de a referenciában nem szereplő utakat is meg kell igazítani.
 
 Szintén szándékosan nem húzza a referenciára azokat az OSM-es utakat, ahol meg van adva a sávok száma, és ez páratlan, vagy nem egyezik a két irányban. Ez azért lényeges, mert az OSM-en az aszfalt közepét szoktuk térképezni, míg a Magyar Közút a két irányt elválasztó vonalat.
 
