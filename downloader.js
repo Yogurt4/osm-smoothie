@@ -16,21 +16,21 @@ import * as ct from 'osm-smoothie/coordtrans';
 function mergeRects(rects, maxArea)
 {
   let result = [];
+  let merged = rects[0];
   let i;
   for (i = 1; i < rects.length; ++i) {
-    const merged = {
-      minX: Math.min(rects[i - 1].minX, rects[i].minX),
-      minY: Math.min(rects[i - 1].minY, rects[i].minY),
-      maxX: Math.max(rects[i - 1].maxX, rects[i].maxX),
-      maxY: Math.max(rects[i - 1].maxY, rects[i].maxY)
-    };
+    merged.minX = Math.min(merged.minX, rects[i].minX);
+    merged.minY = Math.min(merged.minY, rects[i].minY);
+    merged.maxX = Math.max(merged.maxX, rects[i].maxX);
+    merged.maxY = Math.max(merged.maxY, rects[i].maxY);
     const a = ct.getArea(merged.minX, merged.minY, merged.maxX, merged.maxY);
-    if (a <= maxArea * 1.0e6)
-      rects[i] = merged;
-    else
-      result.push(rects[i - 1]);
+    if (a > maxArea * 1.0e6) {
+      result.push(merged);
+      merged = rects[i];
+    }
   }
-  result.push(rects.at(-1));
+  if (rects.length === 1 || merged !== rects.at(-1))
+    result.push(merged);
 
   return result;
 }
