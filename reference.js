@@ -41,31 +41,47 @@ export function getReference(refName, refTag)
   }
 
   // Multiple selection may be scattered so we order them to minimise downloads
-  selWays.sort((a, b) => {
-    const ca1 = a.firstNode().getCoor();
-    const ca2 = a.lastNode().getCoor();
-    const cb1 = b.firstNode().getCoor();
-    const cb2 = b.lastNode().getCoor();
-    let mina = ca1;
-    if (ca2.lon() < ca1.lon())
-      mina = ca2;
-    let minb = cb1;
-    if (cb2.lon() < cb1.lon())
-      minb = cb2;
-    if (mina.lon() !== minb.lon())
-      return mina.lon() - minb.lon();
-    return mina.lat() - minb.lat();
-  });
+  let nodeCnt = {};
+  for (const w of selWays) {
+    nodeCnt[w.firstNode().getUniqueId()] = 1 + (nodeCnt[w.firstNode().getUniqueId()] ?? 0);
+    nodeCnt[w.lastNode().getUniqueId()] = 1 + (nodeCnt[w.lastNode().getUniqueId()] ?? 0);
+  }
+  let singleNodes = {};
+  for (const [k, v] of Object.entries(nodeCnt)) {
+    if (v !== 2)
+      singleNodes[k] = v;
+  }
+
+  let currentWay;
+  let currentEnd;
+  let minStartLon;
+  for (const w of selWays) {
+    if (singleNodes.hasOwnProperty(w.firstNode().getUniqueId())) {
+      if (!minStartLon || minStartLon > w.firstNode().getCoor().lon()) {
+        currentWay = w;
+        currentEnd = w.lastNode().getUniqueId();
+        minStartLon = w.firstNode().getCoor().lon();
+      }
+    }
+    if (singleNodes.hasOwnProperty(w.lastNode().getUniqueId())) {
+      if (!minStartLon || minStartLon > w.lastNode().getCoor().lon()) {
+        currentWay = w;
+        currentEnd = w.firstNode().getUniqueId();
+        minStartLon = w.lastNode().getCoor().lon();
+      }
+    }
+  }
+  if (!currentWay) {
+    currentWay = selWays[0];
+    if (currentWay.firstNode().getCoor().lon() > currentWay.lastNode().getCoor().lon())
+      currentEnd = currentWay.firstNode().getUniqueId();
+    else
+      currentEnd = currentWay.lastNode().getUniqueId();
+  }
 
   let i;
   let ordered = [];
   let visited = new Set();
-  let currentWay = selWays[0];
-  let currentEnd;
-  if (currentWay.firstNode().getCoor().lon() > currentWay.lastNode().getCoor().lon())
-    currentEnd = currentWay.firstNode().getUniqueId();
-  else
-    currentEnd = currentWay.lastNode().getUniqueId();
   for ( ; currentWay; ) {
     ordered.push(currentWay);
     visited.add(currentWay.getUniqueId());
