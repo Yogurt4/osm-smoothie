@@ -50,31 +50,32 @@ class console {
   {
     const hasErrors = (console.errors.length > 0);
     const hasWarnings = (console.warnings.length > 0);
-    if (hasErrors || hasWarnings) {
-      let options = {
-        title: 'Error Alert',
-        messageType: 'error'
-      };
-      let msg = '';
-      if (hasErrors) {
-        if (hasWarnings)
-          msg = 'Errors:\n'
-          msg += console.errors.join('\n');
-          msg += '\n\nWarnings:\n';
-      }
+    if (!hasErrors && !hasWarnings)
+      return;
 
-      if (hasWarnings) {
-        if (!hasErrors) {
-          options.title = 'Warning Alert';
-          options.messageType = 'warning';
-        }
-        msg += console.warnings.join('\n');
-      }
-
-      josm.alert(msg, options);
-
-      jsconsole.show();
+    let options = {
+      title: 'Error Alert',
+      messageType: 'error'
+    };
+    let msg = '';
+    if (hasErrors) {
+      if (hasWarnings)
+        msg = 'Errors:\n'
+        msg += console.errors.join('\n');
+        msg += '\n\nWarnings:\n';
     }
+
+    if (hasWarnings) {
+      if (!hasErrors) {
+        options.title = 'Warning Alert';
+        options.messageType = 'warning';
+      }
+      msg += console.warnings.join('\n');
+    }
+
+    josm.alert(msg, options);
+
+    jsconsole.show();
   }
 };
 

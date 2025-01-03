@@ -12,7 +12,7 @@ const config = {
   RefTag: 'kszam',
   WorkName: 'work',
   BufferWidth: 50.0,  // m
-  MaxArea: 20.0,      // km2
+  MaxArea: 25.0,      // km2
   SnapRadius: 2.0,    // m
   MaxDistance: 0.5,   // m
   MinSegmentLength: 10.0, // m

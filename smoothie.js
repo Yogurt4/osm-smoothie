@@ -110,7 +110,9 @@ export function processOSM(ref, refs, config)
   let cntFreshN = 0;
   let users = {};
   for (let w of ds.getWays()) {
-    if (!w.get('highway') || w.get('ref') !== ref)
+    if (!w.get('highway') || !w.get('ref'))
+      continue;
+    if (!w.get('ref').split(';').includes(ref))
       continue;
     if (w.get('oneway') === 'yes' || w.get('junction') === 'roundabout' || w.get('highway') === 'construction')
       continue;
