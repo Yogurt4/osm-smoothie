@@ -16,21 +16,24 @@ import * as ct from 'osm-smoothie/coordtrans';
 function mergeRects(rects, maxArea)
 {
   let result = [];
-  let merged = rects[0];
+  let lastMerged = rects[0];
   let i;
   for (i = 1; i < rects.length; ++i) {
-    merged.minX = Math.min(merged.minX, rects[i].minX);
-    merged.minY = Math.min(merged.minY, rects[i].minY);
-    merged.maxX = Math.max(merged.maxX, rects[i].maxX);
-    merged.maxY = Math.max(merged.maxY, rects[i].maxY);
+    const merged = {
+      minX: Math.min(lastMerged.minX, rects[i].minX),
+      minY: Math.min(lastMerged.minY, rects[i].minY),
+      maxX: Math.max(lastMerged.maxX, rects[i].maxX),
+      maxY: Math.max(lastMerged.maxY, rects[i].maxY)
+    }
     const a = ct.getArea(merged.minX, merged.minY, merged.maxX, merged.maxY);
     if (a > maxArea * 1.0e6) {
-      result.push(merged);
-      merged = rects[i];
+      result.push(lastMerged);
+      lastMerged = rects[i];
+    } else {
+      lastMerged = merged;
     }
   }
-  if (rects.length === 1 || merged !== rects.at(-1))
-    result.push(merged);
+  result.push(lastMerged);
 
   return result;
 }
@@ -46,7 +49,7 @@ export function downloadRects(refs, workName, maxArea)
 
   let i = 1;
   merged.forEach((rect) => {
-    console.info(`Downloading rect ${i++} of ${merged.length}`);
+    console.info(`Downloading rect ${i++} of ${merged.length} @ ${JSON.stringify(rect)}`);
     const dset = Api.downloadArea({
       min: { lat: rect.minY, lon: rect.minX },
       max: { lat: rect.maxY, lon: rect.maxX }
