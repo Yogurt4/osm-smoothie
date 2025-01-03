@@ -155,22 +155,21 @@ export function buildFinder(refWays, bufferWidth, maxArea)
     let start = 0;
     let end = nodes.length;
     for ( ; start < nodes.length; ) {
-      if (start === end) {
-        end = nodes.length;
-        continue;
-      }
-      if (start + 1 === end) {
-        console.error('Too long segment in the reference.');
-        break;
-      }
-
       const bbox = ct.bufferRect(getBBox(nodes.slice(start, end)), bufferWidth);
       const a = ct.getArea(bbox.minX, bbox.minY, bbox.maxX, bbox.maxY);
-      if (a < maxArea * 1.0e6) {
+      if (a * 2 < maxArea * 1.0e6) {
         boxes.push(bbox);
-        start = end;
+        if (end === nodes.length)
+          break;
+
+        start = end - 1;
+        end = nodes.length;
       } else {
         end = Math.floor((start + end) / 2);
+        if (start + 1 === end) {
+          console.error('Too long segment in the reference.');
+          break;
+        }
       }
     }
 
