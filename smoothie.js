@@ -69,7 +69,7 @@ function adjustNode(node, refs, config)
 
   if (minDist > config.SnapRadius) {
     // or pull to nearby segments
-    const { minDistSegment, bestSegment } = findNearestSegment(x, y, refs);
+    const { minDist: minDistSegment, bestSegment } = findNearestSegment(x, y, refs);
     if (minDistSegment < config.MaxDistance || minDistSegment > config.BufferWidth)
       return;
 
