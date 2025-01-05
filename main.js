@@ -11,12 +11,13 @@ const config = {
   RefName: 'wfs_21616037.kml',
   RefTag: 'kszam',
   WorkName: 'work',
-  BufferWidth: 50.0,  // m
-  MaxArea: 25.0,      // km2
-  SnapRadius: 2.0,    // m
-  MaxDistance: 0.5,   // m
-  MinSegmentLength: 10.0, // m
-  Variance: 0.2      // m
+  BufferWidth: 50,      // m
+  MaxArea: 25,          // km2
+  SnapRadius: 2.0,      // m
+  MaxError: 0.5,        // m
+  MaxDistance: 20,      // m
+  MinSegmentLength: 10, // m
+  Variance: 0.2         // m
 };
 
 

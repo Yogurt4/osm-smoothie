@@ -63,14 +63,14 @@ function adjustNode(node, refs, config)
         }
       }
     }
-    if (minDist < config.MaxDistance)
+    if (minDist < config.MaxError)
       return;
   }
 
   if (minDist > config.SnapRadius) {
     // or pull to nearby segments
     const { minDist: minDistSegment, bestSegment } = findNearestSegment(x, y, refs);
-    if (minDistSegment < config.MaxDistance || minDistSegment > config.BufferWidth)
+    if (minDistSegment < config.MaxError || minDistSegment > config.MaxDistance || minDistSegment > config.BufferWidth)
       return;
 
     const b = ct.getPerpendicularBase(x, y, bestSegment.x1, bestSegment.y1, bestSegment.x2, bestSegment.y2);
@@ -168,8 +168,12 @@ export function processOSM(ref, refs, config)
           console.info(`Way ${w.getId()} is out of the selected area. Skipped.`);
           break;
         }
+        if (minDist > config.MaxDistance) {
+          console.info(`Way ${w.getId()} is too far from the reference. May need recovery.`);
+          break;
+        }
 
-        if (ct.getDistFromSegment(cx, cy, bestSegment.x1, bestSegment.y1, bestSegment.x2, bestSegment.y2) > config.MaxDistance) {
+        if (ct.getDistFromSegment(cx, cy, bestSegment.x1, bestSegment.y1, bestSegment.x2, bestSegment.y2) > config.MaxError) {
           let node = new Node(new LatLon(cy, cx));
           adjustNode(node, refs, config);
           if (lastCoord !== node.getCoor().toString()) {

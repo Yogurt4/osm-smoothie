@@ -35,7 +35,8 @@ A `main.js` elején találhatók a beállítások. Ezek:
 * `BufferWidth`: A letöltésnél a referencia körüli sáv szélessége méterben
 * `MaxArea`: Letöltésnél az egy kéréssel letölthető maximális terület, négyzetkilométerben. Az OSM API elvileg az itteni alapértelmézésnél jóval nagyobbat is engedne, de a területből kilógó hosszú vonalak, kapcsolatok miatt jobb az óvatosság.
 * `SnapRadius`: Az algoritmus hány méteren belül húzzon rá egy töréspontot a referencia közeli töréspontjára?
-* `MaxDistance`: A referenciához képesti maximális eltérés, méterben
+* `MaxError`: A referenciához képesti maximális eltérés, méterben
+* `MaxDistance`: A referenciától mért igazítási távolság, méterben
 * `MinSegmentLength`: Ívek közelítésekor egy-egy tört szakasz minimális hossza, méterben (még ha így az eltérés `MaxDistance`-nál nagyobb is marad)
 * `Variance`: A „kézremegés” mértéke, méterben
 
@@ -94,6 +95,10 @@ Előfordul, hogy annyit kell igazítani az úton, hogy egy csatlakozó mellékut
 Van, hogy a referencia „érdekes”. Az alábbi képen pl. a buszforduló hurka megszakad. Emiatt aztán az algoritmus a lila vonalról a pirosra húzta a pontokat.
 
 ![loop](img/loop.jpg)
+
+Ezen a képen pedig egy olyan ág van kijelölve, ahol az egyik menetirány sem egyirányú, csak kötelező haladási irány táblákból derül ki a rend. A referencia csak a sárga utat tartalmazza.
+
+![loop2](img/loop2.jpg)
 
 ### Átépítés
 
