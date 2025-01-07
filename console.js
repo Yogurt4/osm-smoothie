@@ -60,8 +60,9 @@ class console {
     let msg = '';
     if (hasErrors) {
       if (hasWarnings)
-        msg = 'Errors:\n'
-        msg += console.errors.join('\n');
+        msg = 'Errors:\n';
+      msg += console.errors.join('\n');
+      if (hasWarnings)
         msg += '\n\nWarnings:\n';
     }
 
