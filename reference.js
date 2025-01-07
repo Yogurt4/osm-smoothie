@@ -39,6 +39,8 @@ export function getReference(refName, refTag)
 
     selWays.push(way);
   }
+  if (selWays.length === 0)
+    return { refWays: [] };
 
   // Multiple selection may be scattered so we order them to minimise downloads
   let nodeCnt = {};

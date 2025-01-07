@@ -26,37 +26,38 @@ function smoothRoadsToReference()
   console.clear();
 
   const { ref, refWays } = rf.getReference(config.RefName, config.RefTag);
-  if (refWays.length === 0)
-    console.error(`No selected ways.`);
+  if (refWays.length > 0) {
+    const refs = rf.buildFinder(refWays, config.BufferWidth, config.MaxArea);
 
-  const refs = rf.buildFinder(refWays, config.BufferWidth, config.MaxArea);
+    console.info(`Processing ref ${ref}, ${refs.length} ways`);
+    dl.downloadRects(refs, config.WorkName, config.MaxArea);
+    sm.processOSM(ref, refs, config);
 
-  console.info(`Processing ref ${ref}, ${refs.length} ways`);
-  dl.downloadRects(refs, config.WorkName, config.MaxArea);
-  sm.processOSM(ref, refs, config);
-
-  // Try to find the starting (at least, West-most) point of the selection
-  let cx = refs[0].nodes[0].lon;
-  let cy = refs[0].nodes[0].lat;
-  if (refs.length > 1 && (JSON.stringify(refs[0].nodes[0]) === JSON.stringify(refs[1].nodes[0])
-       || JSON.stringify(refs[0].nodes[0]) === JSON.stringify(refs[1].nodes.at(-1)))) {
-    cx = refs[0].nodes.at(-1).lon;
-    cy = refs[0].nodes.at(-1).lat;
-  }
-
-  // Zoom around it
-  const mapView = MainApp.getMap().mapView;
-  mapView.zoomTo(new LatLon(cy, cx));
-  mapView.zoomTo(mapView.getCenter(), 0.5);
-
-  // Turn on FÖMI layer as it is needed for the human verification
-  let i;
-  for (i = 0; i < layers.length; ++i) {
-    let layer = layers.get(i);
-    if (layer.getName().startsWith('FÖMI')) {
-      layer.setVisible(true);
-      break;
+    // Try to find the starting (at least, West-most) point of the selection
+    let cx = refs[0].nodes[0].lon;
+    let cy = refs[0].nodes[0].lat;
+    if (refs.length > 1 && (JSON.stringify(refs[0].nodes[0]) === JSON.stringify(refs[1].nodes[0])
+         || JSON.stringify(refs[0].nodes[0]) === JSON.stringify(refs[1].nodes.at(-1)))) {
+      cx = refs[0].nodes.at(-1).lon;
+      cy = refs[0].nodes.at(-1).lat;
     }
+
+    // Zoom around it
+    const mapView = MainApp.getMap().mapView;
+    mapView.zoomTo(new LatLon(cy, cx));
+    mapView.zoomTo(mapView.getCenter(), 0.5);
+
+    // Turn on FÖMI layer as it is needed for the human verification
+    let i;
+    for (i = 0; i < layers.length; ++i) {
+      let layer = layers.get(i);
+      if (layer.getName().startsWith('FÖMI')) {
+        layer.setVisible(true);
+        break;
+      }
+    }
+  } else {
+    console.error(`No selected ways.`);
   }
 
   console.display();
