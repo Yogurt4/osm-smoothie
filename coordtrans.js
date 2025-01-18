@@ -12,6 +12,14 @@ const AdjFactor = 1.00185;  // Adjust for the meridional radius of curvature, in
 export const Epsilon = 1.0e-12;		// degrees
 
 
+export function webMercatorToLatLon(x, y)
+{
+  // Convert Web Mercator x and y (in meters) to Lat/Lon (in degrees)
+  var lon = x / RLon_Earth * 180 / Math.PI;
+  var lat = (2 * Math.atan(Math.exp(y / RLon_Earth)) - Math.PI / 2) * 180 / Math.PI;
+  return { lat, lon };
+}
+
 export function getXDist(x1, x2, y) // lon -> metres
 {
   const dCosY = Math.cos(y * Math.PI / 180);

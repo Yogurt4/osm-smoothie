@@ -15,6 +15,9 @@ import * as ct from 'osm-smoothie/coordtrans';
 
 function mergeRects(rects, maxArea)
 {
+  if (rects.length === 0)
+    return [];
+
   let result = [];
   let lastMerged = rects[0];
   let i;
@@ -40,11 +43,19 @@ function mergeRects(rects, maxArea)
 
 export function downloadRects(refs, workName, maxArea)
 {
-  const rects = refs.map((r) => r.boxes).flat();
-  const merged = mergeRects(rects, maxArea);
+  let rects = refs.map((r) => r.boxes).flat();
   let layer = layers.get(workName);
-  if (!layer)
+  if (layer) {
+    // If we already have it open with elements on it, don't download again
+    const bounds = layer.getViewProjectionBounds();
+    const minLatLon = ct.webMercatorToLatLon(bounds.getMin().getX(), bounds.getMin().getY());
+    const maxLatLon = ct.webMercatorToLatLon(bounds.getMax().getX(), bounds.getMax().getY());
+	rects = rects.filter(r => (r.minX < minLatLon.lon || r.maxX > maxLatLon.lon && r.minY < minLatLon.lat && r.maxY > maxLatLon.lat));
+  } else {
     layer = layers.addDataLayer(workName);
+  }
+
+  const merged = mergeRects(rects, maxArea);
   const layerDSet = layer.getDataSet();
 
   let i = 1;
