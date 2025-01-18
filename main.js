@@ -33,7 +33,7 @@ function smoothRoadsToReference()
     dl.downloadRects(refs, config.WorkName, config.MaxArea);
     sm.processOSM(ref, refs, config);
 
-    // Try to find the starting (at least, West-most) point of the selection
+    // Try to find the starting point of the selection
     let cx = refs[0].nodes[0].lon;
     let cy = refs[0].nodes[0].lat;
     if (refs.length > 1 && (JSON.stringify(refs[0].nodes[0]) === JSON.stringify(refs[1].nodes[0])

@@ -105,7 +105,7 @@ export function processOSM(ref, refs, config)
 
   const refBBox = getTotalBBox(refs);
 
-  const startTime = Date.now() - 86400 * 1000;
+  const startTime = Date.now() - 7 * 86400 * 1000;
   let cntN = 0;
   let cntFreshN = 0;
   let users = {};
@@ -114,7 +114,7 @@ export function processOSM(ref, refs, config)
       continue;
     if (!w.get('ref').split(';').includes(ref))
       continue;
-    if (w.get('oneway') === 'yes' || w.get('junction') === 'roundabout' || w.get('highway') === 'construction')
+    if (w.get('oneway') === 'yes' || w.get('junction') === 'roundabout' || w.get('highway') === 'construction' || w.get('highway') === 'proposed')
       continue;
 
     const la = parseInt(w.get('lanes'));
