@@ -29,12 +29,14 @@ export function getReference(refName, refTag)
   let ref;
   let selWays = [];
   for (const way of ds.getSelectedWays()) {
-    const currRef = way.get(refTag);
-    if (!ref && currRef) {
-      ref = currRef;
-    } else if (ref !== currRef) {
-      console.warn(`Ref mismatch in selection: ${ref} / ${currRef}`);
-      continue;
+    if (refTag) {
+      const currRef = way.get(refTag);
+      if (!ref && currRef) {
+        ref = currRef;
+      } else if (ref !== currRef) {
+        console.warn(`Ref mismatch in selection: ${ref} / ${currRef}`);
+        continue;
+      }
     }
 
     selWays.push(way);

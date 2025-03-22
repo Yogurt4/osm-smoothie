@@ -110,24 +110,27 @@ export function processOSM(ref, refs, config)
   let cntFreshN = 0;
   let users = {};
   for (let w of ds.getWays()) {
-    if (!w.get('highway') || !w.get('ref'))
-      continue;
-    if (!w.get('ref').split(';').includes(ref))
-      continue;
-    if (w.get('oneway') === 'yes' || w.get('junction') === 'roundabout' || w.get('highway') === 'construction' || w.get('highway') === 'proposed')
+    if (!w.get(config.MainTag))
       continue;
 
-    const la = parseInt(w.get('lanes'));
-    const lb = parseInt(w.get('lanes:backward'));
-    const lf = parseInt(w.get('lanes:forward'));
-    if (la && (la % 1) == 1)
-      continue;
-    if (la && lb && (2 * lb !== la))
-      continue;
-    if (la && lf && (2 * lf !== la))
-      continue;
-    if (lb && lf && (lb !== lf))
-      continue;
+    if (config.MainTag === 'highway') {
+      if (!w.get('ref') || !w.get('ref').split(';').includes(ref))
+        continue;
+      if (w.get('oneway') === 'yes' || w.get('junction') === 'roundabout' || w.get('highway') === 'construction' || w.get('highway') === 'proposed')
+        continue;
+
+      const la = parseInt(w.get('lanes'));
+      const lb = parseInt(w.get('lanes:backward'));
+      const lf = parseInt(w.get('lanes:forward'));
+      if (la && (la % 1) == 1)
+        continue;
+      if (la && lb && (2 * lb !== la))
+        continue;
+      if (la && lf && (2 * lf !== la))
+        continue;
+      if (lb && lf && (lb !== lf))
+        continue;
+    }
 
     // Process only ways entirely within the selected references
     const bb = w.getBBox();

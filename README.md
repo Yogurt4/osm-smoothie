@@ -29,6 +29,7 @@ Végül szintén kötelező betölteni a referencia réteget, ami közutak eset�
 
 A `main.js` elején találhatók a beállítások. Ezek:
 
+* `MainTag`: Az a fő címke, amikkel foglalkozni akarunk, pl. `highway`, `railway` vagy `waterway`.
 * `RefName`: A referencia réteg neve
 * `RefTag`: A referenciában annak a mezőnek a neve, ami az OSM-ben a `ref`
 * `WorkName`: A munka réteg neve
@@ -42,17 +43,19 @@ A `main.js` elején találhatók a beállítások. Ezek:
 
 ## Futtatás
 
-1. A referencia rétegen kiválasztjuk a pontosításra szánt vonalat. Ez lehet csak egy törtvonal, de célszerűbb lehet a *Keresés* funkcióval az összes adott számú vonalat kiválasztani (persze nem a fél országon átmenő utak esetén).
+1. Parancsfájlkezelés / Parancskonzol mutatása.
 
-2. Parancskonzol / Futtat. Itt első alkalommal ki kell választanunk a `main.js` állományt, utána már ott lesz a menüben. Akár billentyűkombinációt is rendelhetünk hozzá.
+2. A referencia rétegen kiválasztjuk a pontosításra szánt vonalat. Ez lehet csak egy törtvonal, de célszerűbb lehet a *Keresés* funkcióval az összes adott számú vonalat kiválasztani (persze nem a fél országon átmenő utak esetén).
 
-3. Mérettől függően pár másodperc (max. perc) múlva megkapjuk az igazított OSM vonalakat.
+3. Parancskonzol / Futtat. Itt első alkalommal ki kell választanunk a `main.js` állományt, utána már ott lesz a menüben. Akár billentyűkombinációt is rendelhetünk hozzá.
 
-4. Ezt végignézzük (ennek okairól alább bővebben) elejétől végéig.
+4. Mérettől függően pár másodperc (max. perc) múlva megkapjuk az igazított OSM vonalakat.
 
-5. Adatok feltöltése, az ellenőrzési hibák javítása, majd a tényleges feltöltés.
+5. Ezt végignézzük (ennek okairól alább bővebben) elejétől végéig.
 
-6. GO TO 1.
+6. Adatok feltöltése, az ellenőrzési hibák javítása, majd a tényleges feltöltés.
+
+7. GO TO 2.
 
 ## Végignézés
 

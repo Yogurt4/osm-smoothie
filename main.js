@@ -8,6 +8,7 @@ const MainApp = Java.type('org.openstreetmap.josm.gui.MainApplication');
 const LatLon = Java.type('org.openstreetmap.josm.data.coor.LatLon');
 
 const config = {
+  MainTag: 'highway',
   RefName: 'wfs_21616037.kml',
   RefTag: 'kszam',
   WorkName: 'work',
@@ -48,14 +49,20 @@ function smoothRoadsToReference()
     mapView.zoomTo(mapView.getCenter(), 0.5);
 
     // Turn on FÖMI layer as it is needed for the human verification
+    let layer;
     let i;
     for (i = 0; i < layers.length; ++i) {
-      let layer = layers.get(i);
+      layer = layers.get(i);
       if (layer.getName().startsWith('FÖMI')) {
         layer.setVisible(true);
         break;
       }
     }
+
+    // Turn on our work layer...
+    layer = layers.get(config.WorkName);
+    if (layer)
+        layer.setVisible(true);
   } else {
     console.error(`No selected ways.`);
   }
